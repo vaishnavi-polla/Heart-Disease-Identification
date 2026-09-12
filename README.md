@@ -132,7 +132,6 @@ heartcare
 ![Login Page](docs/images/login.png)
 
 ### Prediction Page
-![Prediction Page](docs/images/prediction1.png)
-
+![Prediction Page](docs/images/predication1.png)
 ### Result Page
 ![Result Page](docs/images/result.png)
