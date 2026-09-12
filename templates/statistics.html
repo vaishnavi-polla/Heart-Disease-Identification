@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Statistics - HeartCare</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #333;
+        }
+
+
+        /* ==============================
+           SIDEBAR
+        ============================== */
+
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+            background: #172b4d;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            color: white;
+            text-align: center;
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .menu a {
+            display: block;
+            color: #dbe5f1;
+            text-decoration: none;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #27446f;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #315a8c;
+            color: white;
+        }
+
+
+        /* ==============================
+           LOGOUT
+        ============================== */
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout a {
+            background: #b42318;
+            color: white;
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .logout a:hover {
+            background: #8f1d15;
+        }
+
+
+        /* ==============================
+           MAIN CONTENT
+        ============================== */
+
+        .main {
+            margin-left: 230px;
+            padding: 30px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #172b4d;
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #777;
+            margin-top: 6px;
+        }
+
+
+        /* ==============================
+           STATISTICS GRID
+        ============================== */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        /* ==============================
+           STAT CARD
+        ============================== */
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.08);
+
+            min-height: 150px;
+        }
+
+        .stat-card h2 {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #172b4d;
+        }
+
+        .stat-description {
+            margin-top: 8px;
+            color: #888;
+            font-size: 13px;
+        }
+
+
+        /* ==============================
+           SPECIAL CARDS
+        ============================== */
+
+        .positive {
+            border-left: 5px solid #d64545;
+        }
+
+        .negative {
+            border-left: 5px solid #2e8b57;
+        }
+
+        .total {
+            border-left: 5px solid #315a8c;
+        }
+
+
+        /* ==============================
+           SUMMARY
+        ============================== */
+
+        .summary {
+            background: white;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .summary h2 {
+            color: #172b4d;
+            margin-bottom: 15px;
+        }
+
+        .summary p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+
+        /* ==============================
+           BACK BUTTON
+        ============================== */
+
+        .back-button {
+            margin-top: 30px;
+        }
+
+        .back-button a {
+            display: inline-block;
+            background: #315a8c;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 7px;
+        }
+
+        .back-button a:hover {
+            background: #24476f;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            ❤️ HeartCare
+        </div>
+
+
+        <div class="menu">
+
+            <a href="{{ url_for('admin_dashboard') }}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{{ url_for('statistics') }}" class="active">
+                📊 Statistics
+            </a>
+
+            <a href="{{ url_for('charts') }}">
+                📈 Charts
+            </a>
+
+            <a href="{{ url_for('admin_dashboard') }}#patient-records">
+                👥 Patient Records
+            </a>
+
+            <!--a href="{{ url_for('abstract') }}">
+                📄 Project Abstract
+            </a--->
+
+        </div>
+
+
+        <div class="logout">
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <div class="main">
+
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <div class="header">
+
+            <h1>Patient Statistics</h1>
+
+            <p>
+                Overview of the patient data stored in the HeartCare system.
+            </p>
+
+        </div>
+
+
+
+        <!-- =====================================
+             STATISTICS CARDS
+        ====================================== -->
+
+        <div class="stats-grid">
+
+
+            <!-- TOTAL PATIENTS -->
+
+            <div class="stat-card total">
+
+                <h2>Total Patients</h2>
+
+                <div class="stat-value">
+                    {{ total_patients }}
+                </div>
+
+                <div class="stat-description">
+                    Total patient records stored
+                </div>
+
+            </div>
+
+
+
+            <!-- POSITIVE CASES -->
+
+            <div class="stat-card positive">
+
+                <h2>Positive Cases</h2>
+
+                <div class="stat-value">
+                    {{ positive_cases }}
+                </div>
+
+                <div class="stat-description">
+                    Predicted positive cases
+                </div>
+
+            </div>
+
+
+
+            <!-- NEGATIVE CASES -->
+
+            <div class="stat-card negative">
+
+                <h2>Negative Cases</h2>
+
+                <div class="stat-value">
+                    {{ negative_cases }}
+                </div>
+
+                <div class="stat-description">
+                    Predicted negative cases
+                </div>
+
+            </div>
+
+
+
+            <!-- POSITIVE PERCENTAGE -->
+
+            <div class="stat-card">
+
+                <h2>Positive Percentage</h2>
+
+                <div class="stat-value">
+                    {{ positive_percentage }}%
+                </div>
+
+                <div class="stat-description">
+                    Percentage of positive predictions
+                </div>
+
+            </div>
+
+
+
+            <!-- NEGATIVE PERCENTAGE -->
+
+            <div class="stat-card">
+
+                <h2>Negative Percentage</h2>
+
+                <div class="stat-value">
+                    {{ negative_percentage }}%
+                </div>
+
+                <div class="stat-description">
+                    Percentage of negative predictions
+                </div>
+
+            </div>
+
+
+
+            <!-- AVERAGE AGE -->
+
+            <div class="stat-card">
+
+                <h2>Average Age</h2>
+
+                <div class="stat-value">
+                    {{ average_age }}
+                </div>
+
+                <div class="stat-description">
+                    Average age of patients
+                </div>
+
+            </div>
+
+
+
+            <!-- MINIMUM AGE -->
+
+            <div class="stat-card">
+
+                <h2>Minimum Age</h2>
+
+                <div class="stat-value">
+                    {{ minimum_age }}
+                </div>
+
+                <div class="stat-description">
+                    Youngest recorded age
+                </div>
+
+            </div>
+
+
+
+            <!-- MAXIMUM AGE -->
+
+            <div class="stat-card">
+
+                <h2>Maximum Age</h2>
+
+                <div class="stat-value">
+                    {{ maximum_age }}
+                </div>
+
+                <div class="stat-description">
+                    Oldest recorded age
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             SUMMARY
+        ====================================== -->
+
+        <div class="summary">
+
+            <h2>Statistics Summary</h2>
+
+            <p>
+                The HeartCare system currently contains
+                <strong>{{ total_patients }}</strong> patient records.
+                Among these records,
+                <strong>{{ positive_cases }}</strong> are predicted as
+                positive and
+                <strong>{{ negative_cases }}</strong> are predicted as
+                negative.
+            </p>
+
+            <p>
+                The average patient age is
+                <strong>{{ average_age }}</strong> years,
+                with the recorded ages ranging from
+                <strong>{{ minimum_age }}</strong> to
+                <strong>{{ maximum_age }}</strong> years.
+            </p>
+
+        </div>
+
+
+
+        <!-- =====================================
+             BACK BUTTON
+        ====================================== -->
+
+        <div class="back-button">
+
+            <a href="{{ url_for('admin_dashboard') }}">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

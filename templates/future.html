@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Future Scope | Heart Disease Identification</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            color: rgb(195, 17, 17);
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.35),
+                    rgba(0, 0, 0, 0.35)
+                ),
+                url("/static/images/future.png");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 82px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            
+             background: rgba(255, 255, 255, 0.12);
+
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: white;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: 500;
+
+            transition: 0.3s;
+        }
+
+
+        .nav-links a:hover {
+            color: #7dd3fc;
+        }
+
+
+        /* ================= FUTURE SECTION ================= */
+
+        .future-page {
+            min-height: calc(100vh - 82px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 55px 8%;
+        }
+
+
+        .future-box {
+            width: 950px;
+            max-width: 100%;
+
+            padding: 42px 55px;
+
+            background:rgba(255,255,255,0.08);
+
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            border: 1px solid rgba(255, 255, 255, 0.25);
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.30);
+        }
+
+
+        .future-box h1 {
+            text-align: center;
+
+            font-size: 40px;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 28px;
+
+            color: white;
+        }
+
+
+        .future-box p {
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            text-align: justify;
+
+            color: #f1f1f1;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+
+            .logo {
+                font-size: 18px;
+            }
+
+
+            .nav-links {
+                gap: 12px;
+            }
+
+
+            .nav-links a {
+                font-size: 13px;
+            }
+
+
+            .future-page {
+                padding: 35px 5%;
+            }
+
+
+            .future-box {
+                padding: 30px 25px;
+            }
+
+
+            .future-box h1 {
+                font-size: 30px;
+            }
+
+
+            .future-box p {
+                font-size: 15px;
+
+                line-height: 1.7;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            ❤️ HeartCare
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/abstract">
+                Abstract
+            </a>
+
+            <a href="/future">
+                Future
+            </a>
+
+            <a href="/login">
+                Login
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= FUTURE SCOPE ================= -->
+
+    <section class="future-page">
+
+        <div class="future-box">
+
+            <h1>FUTURE SCOPE</h1>
+
+
+           
+
+        <p>
+            The Heart Disease Identification system has several possibilities
+            for future improvement. The system can be trained with larger and
+            more diverse datasets to improve prediction reliability.
+            Additional machine learning models can also be evaluated to
+            identify the most suitable model for different patient data.
+            More health parameters and patient medical history can be
+            included to provide better risk analysis. The application can
+            further be developed into a mobile-friendly platform and can be
+            integrated with healthcare systems for authorized access to
+            patient records. Enhanced security and privacy features can also
+            be implemented to protect patient information. In the future,
+            the system can act as a supportive tool for early identification
+            of possible heart disease and assist healthcare professionals,
+            while the final medical decision remains with qualified
+            healthcare professionals.
+        </p>
+
+    
+
+        </div>
+
+    </section>
+
+
+</body>
+
+</html>

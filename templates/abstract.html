@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Abstract - Heart Disease Identification</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.45),
+            rgba(0, 0, 0, 0.45)
+        ),
+        url("/static/images/.png");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 82px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: rgba(25, 53, 90, 0.6);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.20);
+        }
+
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: white;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+
+        .nav-links a:hover {
+            color: #7dd3fc;
+        }
+
+
+        /* ABSTRACT AREA */
+
+        .abstract-page {
+            min-height: calc(100vh - 82px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 60px 8%;
+        }
+
+
+        .abstract-box {
+    width: 900px;
+    max-width: 100%;
+    padding: 40px 50px;
+
+  background:rgba(0, 0, 0, 0.68)
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 15px;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+        .abstract-box h1 {
+            text-align: center;
+
+            font-size: 38px;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 28px;
+          
+            color: #73d1e1;
+        }
+
+
+        .abstract-box p {
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            text-align: justify;
+
+            color: #eeeeee;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+            }
+
+            .abstract-page {
+                padding: 30px 5%;
+            }
+
+            .abstract-box {
+                padding: 30px 25px;
+            }
+
+            .abstract-box h1 {
+                font-size: 30px;
+            }
+
+            .abstract-box p {
+                font-size: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Heart Disease Identification
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+           
+
+            <a href="/login">
+                Login
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ABSTRACT -->
+
+    <section class="abstract-page">
+
+        <div class="abstract-box">
+
+            <h1>ABSTRACT</h1>
+
+
+            <p>
+                Heart disease is one of the major health problems
+                affecting people worldwide. Early identification of
+                heart disease can help in taking timely medical care
+                and reducing health risks.
+            </p>
+
+
+            <br>
+
+
+            <p>
+                Our project, <strong>Heart Disease Identification</strong>,
+                is a web-based system developed to identify the possibility
+                of heart disease using patient health information. The
+                system analyzes the entered health parameters using a
+                machine learning classification model and provides a
+                prediction result.We evaluated Logistic Regression, Decision Tree, Random Forest, and K-Nearest Neighbors (KNN) and compared their performance using accuracy and other evaluation measures. Among the tested algorithms, Logistic Regression achieved the highest accuracy of 91.67%, making it the final selected model for our Heart Disease Identification system.
+            </p>
+
+
+            <br>
+
+
+            <p>
+                The system also stores patient information and prediction
+                records in a database for authorized access. The main
+                objective of this project is to provide a simple, fast,
+                and user-friendly system that can support the early
+                identification of possible heart disease.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</body>
+
+</html>

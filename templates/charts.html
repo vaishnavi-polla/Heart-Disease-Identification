@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Charts - HeartCare</title>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+
+        /* =========================================
+           GENERAL
+        ========================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #333;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================== */
+
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+
+            background: #172b4d;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            padding: 25px 15px;
+        }
+
+
+        /* LOGO */
+
+        .logo {
+            color: white;
+
+            text-align: center;
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            margin-bottom: 35px;
+        }
+
+
+        /* MENU */
+
+        .menu a {
+            display: block;
+
+            color: #dbe5f1;
+
+            text-decoration: none;
+
+            padding: 13px 15px;
+
+            margin-bottom: 8px;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+        }
+
+
+        .menu a:hover {
+            background: #27446f;
+
+            color: white;
+        }
+
+
+        /* ACTIVE MENU */
+
+        .menu a.active {
+            background: #315a8c;
+
+            color: white;
+        }
+
+
+        /* =========================================
+           LOGOUT
+        ========================================== */
+
+        .logout {
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 15px;
+
+            right: 15px;
+        }
+
+
+        .logout a {
+            background: #b42318;
+
+            color: white;
+
+            display: block;
+
+            text-align: center;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+        }
+
+
+        .logout a:hover {
+            background: #8f1d15;
+        }
+
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================== */
+
+        .main {
+            margin-left: 230px;
+
+            padding: 30px;
+        }
+
+
+        /* HEADER */
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+
+        .header h1 {
+            color: #172b4d;
+
+            font-size: 28px;
+        }
+
+
+        .header p {
+            color: #777;
+
+            margin-top: 6px;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================================
+           CHART GRID
+           
+           IMPORTANT:
+           Charts are displayed ONE BELOW ANOTHER
+        ========================================== */
+
+        .chart-grid {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 30px;
+
+        }
+
+
+        /* =========================================
+           CHART CARD
+        ========================================== */
+
+        .chart-card {
+
+            background: white;
+
+            width: 650px;
+
+            max-width: 100%;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        /* CHART TITLE */
+
+        .chart-card h2 {
+
+            color: #172b4d;
+
+            font-size: 18px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        /* CHART DESCRIPTION */
+
+        .chart-card p {
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* =========================================
+           CHART CONTAINER
+           
+           Keeps charts small and controlled
+        ========================================== */
+
+        .chart-container {
+
+            position: relative;
+
+            width: 100%;
+
+            height: 300px;
+
+        }
+
+
+        /* =========================================
+           BACK BUTTON
+        ========================================== */
+
+        .back-button {
+
+            margin-top: 30px;
+
+            text-align: center;
+
+        }
+
+
+        .back-button a {
+
+            display: inline-block;
+
+            background: #315a8c;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 10px 20px;
+
+            border-radius: 7px;
+
+        }
+
+
+        .back-button a:hover {
+
+            background: #24476f;
+
+        }
+
+
+        /* =========================================
+           RESPONSIVE DESIGN
+        ========================================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+
+                width: 190px;
+
+            }
+
+
+            .main {
+
+                margin-left: 190px;
+
+            }
+
+
+            .chart-card {
+
+                width: 100%;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+            }
+
+
+            .logout {
+
+                position: static;
+
+                margin-top: 20px;
+
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 20px;
+
+            }
+
+
+            .chart-card {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <div class="sidebar">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            ❤️ HeartCare
+
+        </div>
+
+
+
+        <!-- MENU -->
+
+        <div class="menu">
+
+
+            <!-- DASHBOARD -->
+
+            <a href="{{ url_for('admin_dashboard') }}">
+
+                🏠 Dashboard
+
+            </a>
+
+
+
+            <!-- STATISTICS -->
+
+            <a href="{{ url_for('statistics') }}">
+
+                📊 Statistics
+
+            </a>
+
+
+
+            <!-- CHARTS -->
+
+            <a href="{{ url_for('charts') }}" class="active">
+
+                📈 Charts
+
+            </a>
+
+
+
+            <!-- PATIENT RECORDS -->
+
+            <a href="{{ url_for('patient_records') }}">
+
+                👥 Patient Records
+
+            </a>
+
+
+
+            <!-- ABSTRACT -->
+
+            <!---a href="{{ url_for('abstract') }}">
+
+                📄 Project Abstract
+
+            </a--->
+
+
+        </div>
+
+
+
+        <!-- LOGOUT -->
+
+        <div class="logout">
+
+            <a href="{{ url_for('logout') }}">
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <div class="main">
+
+
+        <!-- =====================================
+             PAGE HEADER
+        ====================================== -->
+
+        <div class="header">
+
+            <h1>
+
+                Patient Data Charts
+
+            </h1>
+
+
+            <p>
+
+                Graphical analysis of patient prediction records.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =====================================
+             CHARTS
+        ====================================== -->
+
+        <div class="chart-grid">
+
+
+
+            <!-- =================================
+                 CHART 1
+                 PREDICTION RESULTS
+            ================================== -->
+
+            <div class="chart-card">
+
+
+                <h2>
+
+                    Prediction Results
+
+                </h2>
+
+
+                <p>
+
+                    Distribution of positive and negative predictions.
+
+                </p>
+
+
+                <div class="chart-container">
+
+                    <canvas id="predictionChart"></canvas>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 CHART 2
+                 AGE DISTRIBUTION
+            ================================== -->
+
+            <div class="chart-card">
+
+
+                <h2>
+
+                    Age Distribution
+
+                </h2>
+
+
+                <p>
+
+                    Number of patients for each age.
+
+                </p>
+
+
+                <div class="chart-container">
+
+                    <canvas id="ageChart"></canvas>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 CHART 3
+                 SEX DISTRIBUTION
+            ================================== -->
+
+            <div class="chart-card">
+
+
+                <h2>
+
+                    Sex Distribution
+
+                </h2>
+
+
+                <p>
+
+                    Distribution of patients by sex.
+
+                </p>
+
+
+                <div class="chart-container">
+
+                    <canvas id="sexChart"></canvas>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 CHART 4
+                 CHEST PAIN DISTRIBUTION
+            ================================== -->
+
+            <div class="chart-card">
+
+
+                <h2>
+
+                    Chest Pain Distribution
+
+                </h2>
+
+
+                <p>
+
+                    Number of patients for each chest pain type.
+
+                </p>
+
+
+                <div class="chart-container">
+
+                    <canvas id="cpChart"></canvas>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             BACK BUTTON
+        ====================================== -->
+
+        <div class="back-button">
+
+            <a href="{{ url_for('admin_dashboard') }}">
+
+                ← Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+
+        /* =========================================
+           1. PREDICTION DATA
+        ========================================== */
+
+        const predictionData =
+            {{ prediction_data | tojson }};
+
+
+        const predictionLabels =
+            predictionData.map(
+                item => item[0]
+            );
+
+
+        const predictionValues =
+            predictionData.map(
+                item => item[1]
+            );
+
+
+
+        /* =========================================
+           PREDICTION CHART
+        ========================================== */
+
+        new Chart(
+
+            document.getElementById(
+                "predictionChart"
+            ),
+
+            {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels: predictionLabels,
+
+                    datasets: [
+
+                        {
+
+                            data: predictionValues
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+
+        /* =========================================
+           2. AGE DATA
+        ========================================== */
+
+        const ageData =
+            {{ age_data | tojson }};
+
+
+        const ageLabels =
+            ageData.map(
+                item => item[0]
+            );
+
+
+        const ageValues =
+            ageData.map(
+                item => item[1]
+            );
+
+
+
+        /* =========================================
+           AGE CHART
+        ========================================== */
+
+        new Chart(
+
+            document.getElementById(
+                "ageChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: ageLabels,
+
+                    datasets: [
+
+                        {
+
+                            label: "Patients",
+
+                            data: ageValues
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                stepSize: 1
+
+                            }
+
+                        }
+
+                    },
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+
+        /* =========================================
+           3. SEX DATA
+        ========================================== */
+
+        const sexData =
+            {{ sex_data | tojson }};
+
+
+        const sexLabels =
+            sexData.map(
+
+                item => {
+
+                    if (item[0] == 1) {
+
+                        return "Male";
+
+                    }
+
+                    else {
+
+                        return "Female";
+
+                    }
+
+                }
+
+            );
+
+
+        const sexValues =
+            sexData.map(
+                item => item[1]
+            );
+
+
+
+        /* =========================================
+           SEX CHART
+        ========================================== */
+
+        new Chart(
+
+            document.getElementById(
+                "sexChart"
+            ),
+
+            {
+
+                type: "pie",
+
+                data: {
+
+                    labels: sexLabels,
+
+                    datasets: [
+
+                        {
+
+                            data: sexValues
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+
+        /* =========================================
+           4. CHEST PAIN DATA
+        ========================================== */
+
+        const cpData =
+            {{ cp_data | tojson }};
+
+
+        const cpLabels =
+            cpData.map(
+
+                item => "Type " + item[0]
+
+            );
+
+
+        const cpValues =
+            cpData.map(
+
+                item => item[1]
+
+            );
+
+
+
+        /* =========================================
+           CHEST PAIN CHART
+        ========================================== */
+
+        new Chart(
+
+            document.getElementById(
+                "cpChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: cpLabels,
+
+                    datasets: [
+
+                        {
+
+                            label: "Patients",
+
+                            data: cpValues
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                stepSize: 1
+
+                            }
+
+                        }
+
+                    },
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Records - Heart Disease Identification</title>
+
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+       
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f7fc;
+            color: #1b3155;
+        }
+
+        /* ================================
+           SIDEBAR
+        ================================= */
+
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+            background: #172b4d;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 25px 15px;
+        }
+
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+
+            padding: 0 18px 45px;
+
+            color: white;
+        }
+
+        .logo span {
+            color: #18c6df;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 10px;
+        }
+
+       .menu a {
+            display: block;
+            color: #dbe5f1;
+            text-decoration: none;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #315f91;
+        }
+
+        .menu .active {
+            background: #37699f;
+        }
+          
+        /* ==============================
+           LOGOUT
+        ============================== */
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout a {
+            background: #b42318;
+            color: white;
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .logout a:hover {
+            background: #8f1d15;
+        }
+
+
+
+        /* ================================
+           MAIN CONTENT
+        ================================= */
+
+        .main {
+            margin-left: 250px;
+
+            padding: 38px;
+
+            min-height: 100vh;
+        }
+
+
+        .heading h1 {
+            font-size: 38px;
+
+            margin-bottom: 8px;
+
+            color: #1b3155;
+        }
+
+        .heading p {
+            font-size: 20px;
+
+            color: #777;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* ================================
+           TOTAL RECORDS
+        ================================= */
+
+        .total-box {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            margin-bottom: 28px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+            font-size: 22px;
+        }
+
+        .total-box strong {
+            color: #315f91;
+        }
+
+
+        /* ================================
+           TABLE CARD
+        ================================= */
+
+        .table-card {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 12px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1600px;
+        }
+
+
+        thead {
+            background: #172f55;
+
+            color: white;
+        }
+
+
+        th {
+            padding: 16px 14px;
+
+            text-align: center;
+
+            font-size: 16px;
+
+            white-space: nowrap;
+        }
+
+
+        td {
+            padding: 14px;
+
+            text-align: center;
+
+            border-bottom: 1px solid #e5e5e5;
+
+            font-size: 15px;
+
+            white-space: nowrap;
+        }
+
+
+        tbody tr:hover {
+            background: #f1f7fc;
+        }
+
+
+        /* ================================
+           PREDICTION
+        ================================= */
+
+        .positive {
+            color: #e53935;
+
+            font-weight: bold;
+        }
+
+
+        .negative {
+            color: #269653;
+
+            font-weight: bold;
+        }
+
+
+        /* ================================
+           BACK BUTTON
+        ================================= */
+
+        .back-btn {
+            display: inline-block;
+
+            margin-top: 28px;
+
+            padding: 14px 25px;
+
+            background: #315f91;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 18px;
+
+            transition: 0.3s;
+        }
+
+
+        .back-btn:hover {
+            background: #244c78;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ================================
+           NO RECORDS
+        ================================= */
+
+        .no-records {
+            text-align: center;
+
+            padding: 35px;
+
+            color: #777;
+
+            font-size: 18px;
+        }
+
+
+        /* ================================
+           MOBILE
+        ================================= */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+
+                padding: 20px;
+            }
+
+            .heading h1 {
+                font-size: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         SIDEBAR
+    ================================== -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            ❤️ Heart<span>Care</span>
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+                <a href="{{ url_for('admin_dashboard') }}">
+                    🏠 Dashboard
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{{ url_for('statistics') }}">
+                    📊 Statistics
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{{ url_for('charts') }}">
+                    📈 Charts
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{{ url_for('patient_records') }}"
+                   class="active">
+                    👥 Patient Records
+                </a>
+            </li>
+
+
+            <li>
+               
+                <!---a href="{{ url_for('abstract') }}">
+    📄 Project Abstract
+</a-->
+            </li>
+
+        </ul>
+
+    </div>
+
+
+
+    <!-- =================================
+         MAIN
+    ================================== -->
+
+    <div class="main">
+
+
+        <div class="heading">
+
+            <h1>
+                Patient Records
+            </h1>
+
+            <p>
+                View all patient prediction records stored in the HeartCare system.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================
+             TOTAL RECORDS
+        ================================== -->
+
+        <div class="total-box">
+
+            Total Records:
+            <strong>{{ records|length }}</strong>
+
+        </div>
+
+
+
+        <!-- =================================
+             TABLE
+        ================================== -->
+
+        <div class="table-card">
+
+            {% if records %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Age</th>
+
+                        <th>Sex</th>
+
+                        <th>Chest Pain</th>
+
+                        <th>Blood Pressure</th>
+
+                        <th>Cholesterol</th>
+
+                        <th>FBS</th>
+
+                        <th>Rest ECG</th>
+
+                        <th>Max Heart Rate</th>
+
+                        <th>Exercise Angina</th>
+
+                        <th>Oldpeak</th>
+
+                        <th>Slope</th>
+
+                        <th>CA</th>
+
+                        <th>Thal</th>
+
+                        <th>Prediction</th>
+
+                        <th>Created At</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for record in records %}
+
+                    <tr>
+
+                        <!-- ID -->
+
+                        <td>
+                            {{ record["id"] }}
+                        </td>
+
+
+                        <!-- AGE -->
+
+                        <td>
+                            {{ record["age"] }}
+                        </td>
+
+
+                        <!-- SEX -->
+
+                        <td>
+
+                            {% if record["sex"]|int == 1 %}
+
+                                Male
+
+                            {% else %}
+
+                                Female
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CHEST PAIN -->
+
+                        <td>
+                            {{ record["cp"] }}
+                        </td>
+
+
+                        <!-- BLOOD PRESSURE -->
+
+                        <td>
+                            {{ record["trestbps"] }}
+                        </td>
+
+
+                        <!-- CHOLESTEROL -->
+
+                        <td>
+                            {{ record["chol"] }}
+                        </td>
+
+
+                        <!-- FBS -->
+
+                        <td>
+                            {{ record["fbs"] }}
+                        </td>
+
+
+                        <!-- REST ECG -->
+
+                        <td>
+                            {{ record["restecg"] }}
+                        </td>
+
+
+                        <!-- MAX HEART RATE -->
+
+                        <td>
+                            {{ record["thalach"] }}
+                        </td>
+
+
+                        <!-- EXERCISE ANGINA -->
+
+                        <td>
+                            {{ record["exang"] }}
+                        </td>
+
+
+                        <!-- OLDPEAK -->
+
+                        <td>
+                            {{ record["oldpeak"] }}
+                        </td>
+
+
+                        <!-- SLOPE -->
+
+                        <td>
+                            {{ record["slope"] }}
+                        </td>
+
+
+                        <!-- CA -->
+
+                        <td>
+                            {{ record["ca"] }}
+                        </td>
+
+
+                        <!-- THAL -->
+
+                        <td>
+                            {{ record["thal"] }}
+                        </td>
+
+
+                        <!-- PREDICTION -->
+
+                        <td>
+
+                            {% if record["prediction"] == "Positive" %}
+
+                                <span class="positive">
+                                    Positive
+                                </span>
+
+                            {% else %}
+
+                                <span class="negative">
+                                    Negative
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CREATED -->
+
+                        <td>
+                            {{ record["created_at"] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
+            {% else %}
+
+                <div class="no-records">
+
+                    No patient records found.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- =================================
+             BACK BUTTON
+        ================================== -->
+
+        <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="back-btn"
+        >
+            ← Back to Dashboard
+        </a>
+
+
+    </div>
+ 
+</body>
+
+</html>

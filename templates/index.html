@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Heart Disease Identification</title>
+
+
+    <style>
+
+        /* =========================================
+           GENERAL
+        ========================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f2f9fc;
+            color: #17324d;
+        }
+
+
+        /* =========================================
+           HOME / HERO
+        ========================================== */
+
+        .hero {
+            min-height: 100vh;
+
+            position: relative;
+
+            background-image:
+                url("{{ url_for('static', filename='images/medical-bg.jpg') }}");
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-attachment: fixed;
+
+            overflow: hidden;
+        }
+
+
+        /* Medical glass overlay */
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 30, 61, 0.72),
+                    rgba(8, 126, 164, 0.42)
+                );
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           NAVBAR
+        ========================================== */
+
+        .navbar {
+            height: 82px;
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 5%;
+
+            position: relative;
+
+            z-index: 10;
+
+            background:
+                rgba(7, 30, 61, 0.42);
+
+            backdrop-filter: blur(18px);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.20);
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================== */
+
+        .logo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            color: white;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            letter-spacing: 0.3px;
+
+            flex-shrink: 0;
+        }
+
+        .heart-logo {
+            width: 43px;
+
+            height: 43px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3c55e1,
+                    #ff5a70
+                );
+
+            box-shadow:
+                0 0 22px
+                rgba(230,57,86,0.50);
+
+            font-size: 21px;
+
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            line-height: 1.15;
+        }
+
+        .logo-text span {
+            color: #48d1e6;
+        }
+
+        .tagline {
+            font-size: 9px;
+
+            font-weight: normal;
+
+            color: #d8f5fa;
+
+            margin-top: 5px;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        /* =========================================
+           NAVIGATION LINKS
+        ========================================== */
+
+        .nav-links {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 6px;
+
+            white-space: nowrap;
+
+            flex-shrink: 0;
+        }
+
+        .nav-links a {
+            color: white;
+
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 22px;
+
+            font-size: 13px;
+
+            transition: 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background:
+                rgba(53,194,217,0.25);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .nav-links .active {
+            background:
+                rgba(53,194,217,0.35);
+
+            box-shadow:
+                0 0 16px
+                rgba(53,194,217,0.25);
+        }
+
+
+        /* =========================================
+           HERO CONTENT
+        ========================================== */
+
+        .hero-content {
+            width: 90%;
+
+            max-width: 1100px;
+
+            margin: 90px auto 70px;
+
+            padding: 65px 55px;
+
+            position: relative;
+
+            z-index: 2;
+
+            text-align: center;
+
+            border-radius: 30px;
+
+            background:
+                rgba(7, 30, 61, 0.38);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.25);
+
+            backdrop-filter: blur(13px);
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.28);
+
+            animation:
+                fadeUp 0.9s ease;
+        }
+
+
+        /* =========================================
+           SMALL LABEL
+        ========================================== */
+
+        .medical-label {
+            display: inline-block;
+
+            padding: 8px 17px;
+
+            margin-bottom: 18px;
+
+            border-radius: 25px;
+
+            background:
+                rgba(72,209,230,0.16);
+
+            border:
+                1px solid
+                rgba(72,209,230,0.35);
+
+            color: #baf3fa;
+
+            font-size: 12px;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =========================================
+           MAIN TITLE
+        ========================================== */
+
+        .hero-title {
+            font-size: 55px;
+
+            line-height: 1.1;
+
+            color: white;
+
+            margin-bottom: 18px;
+
+            letter-spacing: -1.5px;
+        }
+
+        .hero-title span {
+            color: #48d1e6;
+        }
+
+
+        /* =========================================
+           SUBTITLE
+        ========================================== */
+
+        .subtitle {
+            font-size: 21px;
+
+            font-weight: bold;
+
+            color: #ffffff;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================================
+           HIGHLIGHTS
+        ========================================== */
+
+        .highlight {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 14px;
+
+            flex-wrap: wrap;
+
+            margin: 20px 0;
+
+            color: #dffaff;
+
+            font-size: 13px;
+        }
+
+        .highlight span:not(.dot) {
+            padding: 5px 10px;
+        }
+
+        .dot {
+            color: #e63956;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           DESCRIPTION
+        ========================================== */
+
+        .description {
+            max-width: 690px;
+
+            margin: auto;
+
+            color: #d9edf5;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================
+           BUTTONS
+        ========================================== */
+
+        .buttons {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-top: 32px;
+
+            flex-wrap: wrap;
+        }
+
+        .login-btn,
+        .learn-btn {
+            display: inline-block;
+
+            padding: 14px 29px;
+
+            border-radius: 30px;
+
+            text-decoration: none;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: 0.3s ease;
+        }
+
+        .login-btn {
+            background:
+                linear-gradient(
+                    90deg,
+                    #e63956,
+                    #087ea4
+                );
+
+            box-shadow:
+                0 8px 25px
+                rgba(8,126,164,0.35);
+        }
+
+        .learn-btn {
+            background:
+                rgba(255,255,255,0.10);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.30);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .login-btn:hover,
+        .learn-btn:hover {
+            transform:
+                translateY(-4px);
+        }
+
+
+        /* =========================================
+           ABOUT SECTION
+        ========================================== */
+
+        .about-section {
+            min-height: 75vh;
+
+            padding: 85px 7%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5fbfd,
+                    #e5f5f8
+                );
+
+            color: #17324d;
+        }
+
+        .about-container {
+            max-width: 1050px;
+
+            margin: auto;
+        }
+
+        .about-heading {
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+        .about-heading small {
+            color: #087ea4;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            font-size: 11px;
+        }
+
+        .about-heading h2 {
+            margin-top: 10px;
+
+            font-size: 36px;
+
+            color: #071e3d;
+        }
+
+        .about-heading h2 span {
+            color: #e63956;
+        }
+
+        .about-content {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 30px;
+        }
+
+        .about-card {
+            padding: 32px;
+
+            border-radius: 22px;
+
+            background:
+                rgba(255,255,255,0.85);
+
+            border:
+                1px solid
+                rgba(8,126,164,0.12);
+
+            box-shadow:
+                0 12px 35px
+                rgba(7,30,61,0.08);
+
+            transition: 0.3s ease;
+        }
+
+        .about-card:hover {
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 18px 40px
+                rgba(7,30,61,0.12);
+        }
+
+        .about-icon {
+            width: 48px;
+
+            height: 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                rgba(230,57,86,0.10);
+
+            color: #e63956;
+
+            font-size: 22px;
+
+            margin-bottom: 18px;
+        }
+
+        .about-card h3 {
+            color: #071e3d;
+
+            margin-bottom: 12px;
+
+            font-size: 19px;
+        }
+
+        .about-card p {
+            color: #557083;
+
+            line-height: 1.8;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           ABSTRACT
+        ========================================== */
+
+        .info-section {
+            min-height: 500px;
+
+            padding: 90px 7%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dceff5,
+                    #b9dce8
+                );
+        }
+
+        .info-box {
+            width: 100%;
+
+            max-width: 1000px;
+
+            padding: 50px;
+
+            border-radius: 25px;
+
+            background:
+                rgba(7, 30, 61, 0.78);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.20);
+
+            box-shadow:
+                0 15px 45px
+                rgba(7,30,61,0.20);
+
+            color: white;
+        }
+
+        .info-box h2 {
+            text-align: center;
+
+            font-size: 36px;
+
+            margin-bottom: 30px;
+
+            color: #48d1e6;
+        }
+
+        .info-box p {
+            font-size: 16px;
+
+            line-height: 1.9;
+
+            margin-bottom: 20px;
+
+            color: #e1f4f8;
+        }
+
+
+        /* =========================================
+           FUTURE SCOPE
+        ========================================== */
+
+        #future {
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8f7fa,
+                    #c8e9f0
+                );
+        }
+
+        .info-box ul {
+            padding-left: 25px;
+
+            color: #e1f4f8;
+
+            font-size: 16px;
+
+            line-height: 2;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================== */
+
+        footer {
+            background:
+                #071e3d;
+
+            padding: 28px 20px;
+
+            text-align: center;
+
+            color: #b9dce5;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        .footer-title {
+            color: #48d1e6;
+
+            font-size: 17px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           ANIMATION
+        ========================================== */
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 950px) {
+
+            .navbar {
+                padding: 0 3%;
+            }
+
+            .nav-links {
+                gap: 2px;
+            }
+
+            .nav-links a {
+                padding: 8px 9px;
+
+                font-size: 12px;
+            }
+
+            .hero-content {
+                width: 92%;
+
+                margin-top: 60px;
+
+                padding: 50px 30px;
+            }
+
+            .hero-title {
+                font-size: 45px;
+            }
+
+        }
+
+
+        @media (max-width: 750px) {
+
+            .navbar {
+                height: auto;
+
+                min-height: 82px;
+
+                flex-direction: column;
+
+                justify-content: center;
+
+                gap: 12px;
+
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 4px;
+            }
+
+            .hero-content {
+                margin-top: 45px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .heart-logo {
+                width: 38px;
+
+                height: 38px;
+
+                font-size: 18px;
+            }
+
+            .tagline {
+                font-size: 8px;
+            }
+
+            .nav-links a {
+                padding: 7px 8px;
+
+                font-size: 11px;
+            }
+
+            .hero-content {
+                width: 94%;
+
+                padding: 40px 20px;
+            }
+
+            .hero-title {
+                font-size: 37px;
+            }
+
+            .subtitle {
+                font-size: 17px;
+            }
+
+            .description {
+                font-size: 13px;
+            }
+
+            .about-section {
+                padding: 65px 20px;
+            }
+
+            .about-heading h2 {
+                font-size: 29px;
+            }
+
+            .info-section {
+                padding: 60px 20px;
+            }
+
+            .info-box {
+                padding: 30px 22px;
+            }
+
+            .info-box h2 {
+                font-size: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HOME / HERO
+    ========================================== -->
+
+    <section class="hero">
+
+
+        <!-- =====================================
+             NAVIGATION
+        ====================================== -->
+
+        <nav class="navbar">
+
+
+            <!-- WEBSITE LOGO -->
+
+            <div class="logo">
+
+                <div class="heart-logo">
+                    ❤️
+                </div>
+
+                <div class="logo-text">
+
+                    Heart Disease
+                    <span>Identification</span>
+
+                    <div class="tagline">
+                        Your Heart, Our Priority
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION LINKS -->
+
+            <div class="nav-links">
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="active">
+
+                    Home
+
+                </a>
+
+                <a href="#about">
+
+                    About
+
+                </a>
+
+             <a href="/abstract">Abstract</a>
+                <a href="{{ url_for('future') }}">
+
+                    Future
+
+                </a>
+
+                <a href="{{ url_for('login') }}">
+
+                    Login
+
+                </a>
+
+            </div>
+
+
+        </nav>
+
+
+
+        <!-- =====================================
+             HERO CONTENT
+        ====================================== -->
+
+        <div class="hero-content">
+
+
+            <div class="medical-label">
+
+                ❤️ HEART HEALTH AWARENESS
+
+            </div>
+
+
+            <h1 class="hero-title">
+
+                Heart Disease
+                <span>Identification</span>
+
+            </h1>
+
+
+            <div class="subtitle">
+
+                Know Your Heart. Protect Your Future.
+
+            </div>
+
+
+            <div class="highlight">
+
+                <span class="dot">
+
+                    •
+
+                </span>
+                <span>
+
+                    ✓ Early Awareness
+
+                </span>
+
+
+                <span class="dot">
+
+                    •
+
+                </span>
+
+
+                <span>
+
+                    ✓ Healthy Lifestyle
+
+                </span>
+
+
+                <span class="dot">
+
+                    •
+
+                </span>
+
+
+                <span>
+
+                    ✓ Better Care
+
+                </span>
+
+
+            </div>
+
+
+            <p class="description">
+
+                Heart disease is one of the major health
+                concerns affecting people around the world.
+                Understanding risk factors, recognizing
+                warning signs, and taking care of your heart
+                can help support a healthier life.
+
+            </p>
+
+
+            <!-- BUTTONS -->
+
+            <div class="buttons">
+
+
+                <a
+                    href="{{ url_for('login') }}"
+                    class="login-btn">
+
+                    🔐 Login to Continue →
+
+                </a>
+
+
+                <a
+                    href="#about"
+                    class="learn-btn">
+
+                    Learn About Heart Disease
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================
+         ABOUT HEART DISEASE
+    ========================================== -->
+
+    <section
+        class="about-section"
+        id="about">
+
+
+        <div class="about-container">
+
+
+            <div class="about-heading">
+
+                <small>
+
+                    UNDERSTANDING YOUR HEART
+
+                </small>
+
+                <h2>
+
+                    About
+                    <span>Heart Disease</span>
+
+                </h2>
+
+            </div>
+
+
+
+            <div class="about-content">
+
+
+                <!-- WHAT IS HEART DISEASE -->
+
+                <div class="about-card">
+
+                    <div class="about-icon">
+
+                        ❤️
+
+                    </div>
+
+                    <h3>
+
+                        What is Heart Disease?
+
+                    </h3>
+
+                    <p>
+
+                        Heart disease refers to conditions
+                        that affect the heart and the way it
+                        functions. It can affect the blood
+                        vessels, heart rhythm, heart muscles,
+                        or other parts of the cardiovascular
+                        system.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- RISK FACTORS -->
+
+                <div class="about-card">
+
+                    <div class="about-icon">
+
+                        ⚠️
+
+                    </div>
+
+                    <h3>
+
+                        Common Risk Factors
+
+                    </h3>
+
+                    <p>
+
+                        Factors such as high blood pressure,
+                        high cholesterol, smoking, physical
+                        inactivity, unhealthy eating habits,
+                        diabetes, age, and family history
+                        may increase the risk of heart disease.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- WARNING SIGNS -->
+
+                <div class="about-card">
+
+                    <div class="about-icon">
+
+                        🫀
+
+                    </div>
+
+                    <h3>
+
+                        Warning Signs
+
+                    </h3>
+
+                    <p>
+
+                        Some warning signs may include chest
+                        discomfort, shortness of breath,
+                        unusual tiredness, dizziness, or
+                        discomfort in other areas of the
+                        upper body. Symptoms can vary from
+                        person to person.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- HEART HEALTH -->
+
+                <div class="about-card">
+
+                    <div class="about-icon">
+
+                        💙
+
+                    </div>
+
+                    <h3>
+
+                        Take Care of Your Heart
+
+                    </h3>
+
+                    <p>
+
+                        Regular physical activity, balanced
+                        nutrition, adequate rest, avoiding
+                        tobacco, managing stress, and regular
+                        health check-ups can support overall
+                        heart health.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================
+         ABSTRACT
+    ========================================== >
+
+    <section
+        id="abstract"
+        class="info-section">
+
+
+        <div class="info-box">
+
+
+            <h2>
+
+                Abstract
+
+            </h2>
+
+
+            <p>
+
+                Heart disease is one of the major health
+                concerns affecting people worldwide.
+                Early identification of possible heart
+                disease risk can help in taking appropriate
+                preventive measures and seeking timely
+                medical advice.
+
+            </p>
+
+
+            <p>
+
+                The Heart Disease Identification system
+                provides a simple and user-friendly platform
+                where users can enter relevant health
+                information and receive an identification
+                result based on the provided data.
+
+            </p>
+
+
+            <p>
+
+                The system is designed to support awareness
+                and early identification while presenting
+                the information in a clear and understandable
+                way.
+
+            </p>
+
+
+        </div>
+
+
+    </section-->
+
+
+
+    <!-- =========================================
+         FUTURE SCOPE
+    ========================================== >
+
+    <section
+        id="future"
+        class="info-section">
+
+
+        <div class="info-box">
+
+
+            <h2>
+
+                Future Scope
+
+            </h2>
+
+
+            <p>
+
+                The system can be further improved with
+                additional health information, larger
+                datasets, and enhanced identification
+                capabilities.
+
+            </p>
+
+
+            <ul>
+
+                <li>
+                    Integration with larger and more diverse datasets
+                </li>
+
+                <li>
+                    Improved user profile and patient record management
+                </li>
+
+                <li>
+                    Additional health-awareness features
+                </li>
+
+                <li>
+                    Interactive statistics and graphical reports
+                </li>
+
+                <li>
+                    Continuous improvement of the identification system
+                </li>
+
+            </ul>
+
+
+        </div>
+
+
+    </section-->
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+
+        <div class="footer-title">
+
+            ❤️ Heart Disease Identification
+
+        </div>
+
+
+        <strong>
+
+            Your Heart, Our Priority
+
+        </strong>
+
+
+        <br>
+
+
+       • Early Awareness • Better Understanding •
+        Healthier Life
+
+
+    </footer>
+
+
+</body>
+
+</html>

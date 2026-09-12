@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Records | Heart Disease Identification</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    rgba(5, 35, 65, 0.82),
+                    rgba(8, 90, 115, 0.90)
+                ),
+                url("{{ url_for('static', filename='images/medical-bg.jpg') }}");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 75px;
+
+            padding: 0 7%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(3, 25, 45, 0.94);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.15);
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,0.25);
+        }
+
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+
+        .heart {
+            color: #ff4f81;
+            margin-right: 5px;
+        }
+
+
+        .blue {
+            color: #22d3ee;
+        }
+
+
+        .back {
+            color: white;
+
+            text-decoration: none;
+
+            padding: 10px 20px;
+
+            border-radius: 25px;
+
+            transition: 0.3s;
+        }
+
+
+        .back:hover {
+            background: rgba(34,211,238,0.15);
+
+            color: #22d3ee;
+
+            transform: translateX(-3px);
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            min-height: calc(100vh - 75px);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 50px 20px;
+        }
+
+
+        /* =========================
+           MAIN CARD
+        ========================= */
+
+        .records-card {
+
+            width: 95%;
+
+            max-width: 1100px;
+
+            padding: 40px;
+
+            border-radius: 28px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(18px);
+
+            -webkit-backdrop-filter: blur(18px);
+
+            border:
+                1px solid rgba(255,255,255,0.25);
+
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.30);
+
+            animation: appear 0.7s ease;
+        }
+
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        .title {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .title .icon {
+            font-size: 42px;
+
+            margin-bottom: 10px;
+
+            display: block;
+        }
+
+
+        .title h1 {
+
+            font-size: 34px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .title h1 span {
+            color: #22d3ee;
+        }
+
+
+        .title p {
+
+            color: #d8f6ff;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           RECORDS
+        ========================= */
+
+        .records-container {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 18px;
+        }
+
+
+        .record {
+
+            padding: 22px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(4, 35, 60, 0.55);
+
+            border:
+                1px solid rgba(255,255,255,0.14);
+
+            transition: 0.3s;
+        }
+
+
+        .record:hover {
+
+            transform: translateY(-4px);
+
+            background:
+                rgba(20, 80, 105, 0.65);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.20);
+        }
+
+
+        .record-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
+        }
+
+
+        .record-id {
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            color: #22d3ee;
+        }
+
+
+        .record-date {
+
+            font-size: 13px;
+
+            color: #bdeaf5;
+        }
+
+
+        .record-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .info-box {
+
+            padding: 13px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        .info-label {
+
+            display: block;
+
+            font-size: 12px;
+
+            color: #a9dce8;
+
+            margin-bottom: 5px;
+        }
+
+
+        .info-value {
+
+            font-size: 16px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .positive {
+
+            display: inline-block;
+
+            padding: 7px 16px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,79,129,0.18);
+
+            color: #ffb3c5;
+
+            border:
+                1px solid rgba(255,79,129,0.35);
+
+            font-weight: bold;
+        }
+
+
+        .negative {
+
+            display: inline-block;
+
+            padding: 7px 16px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(50,220,170,0.14);
+
+            color: #a9ffe9;
+
+            border:
+                1px solid rgba(50,220,170,0.30);
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+
+            text-align: center;
+
+            padding: 50px 20px;
+        }
+
+
+        .empty-icon {
+
+            font-size: 55px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty h2 {
+
+            margin-bottom: 10px;
+        }
+
+
+        .empty p {
+
+            color: #ccecf4;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .button {
+
+            display: inline-block;
+
+            padding: 13px 26px;
+
+            border-radius: 25px;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff4f81,
+                    #22b8d6
+                );
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.20);
+
+            transition: 0.3s;
+        }
+
+
+        .button:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,0.30);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+
+            .logo {
+                font-size: 17px;
+            }
+
+
+            .main {
+                padding: 30px 12px;
+            }
+
+
+            .records-card {
+                padding: 25px 18px;
+            }
+
+
+            .title h1 {
+                font-size: 28px;
+            }
+
+
+            .record-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .record-info {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <span class="heart">♥</span>
+
+            Heart Disease
+            <span class="blue">Identification</span>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('user_dashboard') }}"
+            class="back"
+        >
+            ← Dashboard
+        </a>
+
+    </nav>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+        <div class="records-card">
+
+
+            <!-- TITLE -->
+
+            <div class="title">
+
+                <span class="icon">❤️</span>
+
+                <h1>
+                    My <span>Records</span>
+                </h1>
+
+                <p>
+                    View your previous heart health assessment records.
+                </p>
+
+            </div>
+
+
+
+            <!-- =========================
+                 RECORDS
+            ========================= -->
+
+            {% if records %}
+
+            <div class="records-container">
+
+
+                {% for record in records %}
+
+                <div class="record">
+
+
+                    <div class="record-header">
+
+                        <div class="record-id">
+
+                            Record #{{ record.id }}
+
+                        </div>
+
+
+                        {% if record.created_at %}
+
+                        <div class="record-date">
+
+                            {{ record.created_at }}
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <div class="record-info">
+
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Age
+                            </span>
+
+                            <span class="info-value">
+                                {{ record.age }}
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="info-box">
+
+    <span class="info-label">
+        Sex
+    </span>
+
+    <span class="info-value">
+
+        {% if record.sex == 1 %}
+            Male
+        {% else %}
+            Female
+        {% endif %}
+
+    </span>
+
+</div>
+
+
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Blood Pressure
+                            </span>
+
+                            <span class="info-value">
+                                {{ record.trestbps }}
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Cholesterol
+                            </span>
+
+                            <span class="info-value">
+                                {{ record.chol }}
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Heart Rate
+                            </span>
+
+                            <span class="info-value">
+                                {{ record.thalach }}
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Result
+                            </span>
+
+
+                            {% if record.prediction == "Positive" %}
+
+                            <span class="positive">
+                                Positive
+                            </span>
+
+                            {% else %}
+
+                            <span class="negative">
+                                Negative
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- NO RECORDS -->
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ❤️
+                </div>
+
+                <h2>
+                    No Records Yet
+                </h2>
+
+                <p>
+                    You haven't completed a heart health assessment yet.
+                </p>
+
+                <a
+                    href="{{ url_for('predictor') }}"
+                    class="button"
+                >
+                    Start Assessment →
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

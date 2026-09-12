@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            background: #e8edf2;
+            color: #071e3d;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container.result {
+            width: 650px;
+            max-width: 90%;
+            padding: 40px;
+
+            text-align: center;
+
+            background: #f4f8fc;
+            border: 1px solid #d5e2ec;
+            border-radius: 18px;
+
+            box-shadow: 0 8px 25px rgba(7, 30, 61, 0.15);
+        }
+
+        .container.result h1 {
+            color: #071e3d;
+            margin-bottom: 10px;
+        }
+
+        .container.result > h2 {
+            color: #2878b5;
+            margin-bottom: 25px;
+        }
+
+        .prediction-box {
+            padding: 25px;
+            border-radius: 14px;
+            margin: 20px 0;
+        }
+
+        .prediction-box h2 {
+            margin-top: 0;
+        }
+
+        .prediction-box p {
+            line-height: 1.6;
+        }
+
+        .prediction-box.positive {
+            background: #fff0f0;
+            border: 1px solid #e5a5a5;
+            color: #9b2020;
+        }
+
+        .prediction-box.negative {
+            background: #eefaf2;
+            border: 1px solid #a8d5b5;
+            color: #20733a;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #5f6f7f;
+            margin: 25px 0;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #2878b5;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #155a8a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container result">
+
+        <h1>❤️ Heart Disease Prediction</h1>
+
+        <h2>Prediction Result</h2>
+
+        {% if prediction == "Positive" %}
+
+            <div class="prediction-box positive">
+                <h2>Prediction: Positive</h2>
+                <p>
+                 You have Symptoms of getting heart disease.
+                 Please consult the Doctor
+                </p>
+            </div>
+
+        {% else %}
+
+            <div class="prediction-box negative">
+                <h2>Prediction: Negative</h2>
+                <p>
+                  You don't have any Symptoms of the Heart Disease 
+                   based on the information provided.
+                </p>
+            </div>
+
+        {% endif %}
+
+        <p class="note">
+            This is an ML-based prediction for educational purposes
+            and is not a medical diagnosis.
+        </p>
+
+        <a href="/predictor" class="back-button">Check Again</a>
+        <a href="{{ url_for('user_dashboard') }}"
+       class="back-button">
+
+        ← Dashboard
+
+    </a>
+
+    </div>
+
+</body>
+</html>
